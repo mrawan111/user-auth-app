@@ -61,11 +61,14 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+          },
           "configurations": {
             "production": {
               "buildTarget": "user-auth-app:build:production"
             },
             "development": {
+              "proxyConfig": "proxy.conf.json",
               "buildTarget": "user-auth-app:build:development"
             }
           },

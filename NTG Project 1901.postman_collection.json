@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "cf67bdaa-daf0-4e15-8c27-49c94bb27cd0",
+		"name": "NTG Project 1901",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28327782"
+	},
+	"item": [
+		{
+			"name": "GET_NTG Project 1901",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "SessionToken",
+						"value": "1757425210194-1006--2297692348438919410",
+						"type": "default"
+					},
+					{
+						"key": "excludeLargeObjects",
+						"value": "true",
+						"type": "default"
+					},
+					{
+						"key": "formName",
+						"value": "cul",
+						"type": "default"
+					},
+					{
+						"key": "moduleName",
+						"value": "cul",
+						"type": "default"
+					},
+					{
+						"key": "appKey",
+						"value": "NAS",
+						"type": "default"
+					},
+					{
+						"key": "recId",
+						"value": "7",
+						"type": "default"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://s1.ntgapps.com:/ntg-school/rest/integration/GetGenericObject",
+					"protocol": "https",
+					"host": [
+						"s1",
+						"ntgapps",
+						"com"
+					],
+					"port": "",
+					"path": [
+						"ntg-school",
+						"rest",
+						"integration",
+						"GetGenericObject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01 Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"userSessionToken\", jsonData.userSessionToken);\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"sendOTPToken\", jsonData.sendOTPToken);\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"checkOTPToken\", jsonData.checkOTPToken);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "SessionToken",
+						"value": "NTG"
+					},
+					{
+						"key": "EncryptedPW",
+						"value": "false",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"LoginUserInfo\": {\r\n        \"loginUserName\": \"A_somaya\",\r\n        \"companyName\": \"NTG\",\r\n        \"sessionLanguage\":\"en\"  //en English  ar Arabic\r\n    },\r\n    \"Password\": \"P@ssw0rd\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://s1.ntgapps.com:/ntg-school/rest/MainFunciton/login",
+					"protocol": "https",
+					"host": [
+						"s1",
+						"ntgapps",
+						"com"
+					],
+					"port": "",
+					"path": [
+						"ntg-school",
+						"rest",
+						"MainFunciton",
+						"login"
+					]
+				},
+				"description": "Login Incident"
+			},
+			"response": []
+		}
+	]
+}
