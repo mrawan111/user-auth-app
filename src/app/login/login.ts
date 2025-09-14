@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../auth';
+import { UserSessionService } from '../user-session.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,14 +11,14 @@ import { Router } from '@angular/router';
   templateUrl: './login.html'
 })
 export class LoginComponent {
-  credentials = { username: '', company: 'NTG', language: 'en', password: '' };
-
-  constructor(private auth: AuthService, private router: Router) {}
+// login.ts - Fix the credentials initialization
+credentials = { username: 'A_somaya', company: 'NTG', language: 'en', password: 'P@ssw0rd' };
+  constructor(private userSession: UserSessionService, private router: Router) {}
 
   onLogin() {
     console.log('Attempting login with credentials:', this.credentials);
-    this.auth.login(this.credentials).subscribe({
-      next: (res) => {
+    this.userSession.login(this.credentials).subscribe({
+      next: (res: any) => {
         console.log('Login successful, response:', res);
         // Check for session token in response
         const sessionToken = res.userSessionToken || res.LoginUserInfo?.userSessionToken;
@@ -26,8 +26,8 @@ export class LoginComponent {
         const checkOTPToken = res.checkOTPToken;
 
         if (sessionToken) {
-          this.auth.setSessionToken(sessionToken);
-          this.auth.setUser({ username: this.credentials.username, company: this.credentials.company });
+          // The userSession service already sets the token and user in the 'tap' operator
+          this.userSession.setUser({ username: this.credentials.username, company: this.credentials.company });
           this.router.navigate(['/dashboard']);
         } else if (sendOTPToken) {
           // Handle OTP required
@@ -40,12 +40,12 @@ export class LoginComponent {
           alert('Login failed: Unexpected response format. Check console for details.');
         }
       },
-      error: err => {
+      error: (err: any) => {
         console.error('Login error:', err);
         console.error('Error status:', err.status);
         console.error('Error message:', err.message);
         console.error('Error details:', err.error);
-        alert('Login failed: ' + (err.error?.message || err.message));
+        alert('Login failed: ' + err.message);
       }
     });
   }
